@@ -38,6 +38,7 @@ CREATE TABLE VendorInventory (
 CREATE TABLE Vendors (
     VendorID int  NOT NULL,
     Name varchar(255)  NOT NULL,
+    Email varchar(255) NOT NULL,
     CONSTRAINT Vendors_pk PRIMARY KEY (VendorID)
 );
 
@@ -77,15 +78,18 @@ INSERT INTO Venue (VenueID, Name, Address) VALUES
 
 --Sample data for ArtistAlley table
 INSERT INTO ArtistAlley (ArtistAlleyID, VenueID, Name, Capacity) VALUES
-(1, 1, 'Creative Corner', 50),
-(2, 2, 'Artistic Express', 30);
+VALUES (1, 1, 'Adam West Hall', 150),
+VALUES (2, 1, 'Clint East Hall', 320),
+VALUES (3, 1, 'Nolan North Hall', 190),
+VALUES (4, 1, 'James South Hall', 55),
+VALUES (5, 1, 'Centre Hall', 100);
 
 --Sample data for Vendors 
 INSERT INTO Vendors (VendorID, Name) VALUES
 (1, 'Artistic Wonders'),
 (2, 'Crafty Creations');
 
---Smaple data for products
+-- Sample data for Products table
 INSERT INTO Products (ProductID, Name, Price, Description) VALUES
 (1, 'Painting Kit', 25.99, 'Complete set for artists'),
 (2, 'Sculpture Tools', 12.50, 'High-quality sculpting tools');
