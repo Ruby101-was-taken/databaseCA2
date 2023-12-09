@@ -95,7 +95,7 @@ INSERT INTO Venue (VenueID, Name, Address) VALUES
 -- Sample data for ArtistAlley table
 INSERT INTO ArtistAlley (ArtistAlleyID, VenueID, Name, Capacity) VALUES
 VALUES (1, 1, 'Adam West Hall', 150),
-VALUES (2, 1, 'Clint East Hall', 320),
+VALUES (2, 1, 'Clint East Hall', 120),
 VALUES (3, 1, 'Nolan North Hall', 190),
 VALUES (4, 1, 'James South Hall', 55),
 VALUES (5, 1, 'Centre Hall', 100);
@@ -206,3 +206,43 @@ BEGIN
 END;
 DELIMITER ;
 //
+
+DELIMITER //
+;
+CREATE TRIGGER room_limit_highestlimit
+BEFORE UPDATE ON ArtistAlley
+FOR EACH ROW
+BEGIN
+ DECLARE checkNewCapacity;
+SET checkNewCapacity = NEW.Capacity;
+IF checkNewCapacity > 200 THEN
+  SIGNAL SQLSTATE '45000'
+  SET MESSAGE_TEXT = 'Room cannot have more than 200 at a time'
+  END IF;
+  END;
+  DELIMITER :
+  //
+  --INSPIRED BY https://stackoverflow.com/questions/59739854/signal-sqlstate-45000-doesnt-stop-insert, USED AS WARNING MESSAGE IF ROOM LIMIT OVER TWO HUNDED
+
+-- Update Statement Example
+UPDATE Vendors
+SET Name = 'Cute Hand-Drawn Art', Description = 'CUTE Hand drawn pictures by me in an art studio of CUTE anime characters'
+WHERE VendorID = 1;
+--This here where basically specifies that only the vendor with VendorID 1 will have that there new name and description
+
+--Delete Statement Example
+DELETE FROM Products
+WHERE Name LIKE '*Sci-Fi*';
+--This one here is mighty simple, deletes all products with "Sci-Fi" in them's names, this convention don't need em War Stars
+
+--View Example #1
+CREATE VIEW [Premium Products Above Average Price ]
+SELECT Name, Price
+FROM Products
+WHERE Price > (SELECT AVG(Price) FROM Products);
+--THIS USES 1 TABLE, AND SHOWS ALL PRODUCTS THAT ARE ABOVE AVERAGE PRICE, THESE ARE PREMIUM PRODUCTS
+
+--View Example the second
+
+--End desc
+
