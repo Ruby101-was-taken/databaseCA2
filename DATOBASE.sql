@@ -259,6 +259,12 @@ WHERE Price > (SELECT AVG(Price) FROM Products);
 CREATE USER 'TheMaster'@'localhost' IDENTIFIED BY 'your_password';
 GRANT ALL PRIVILEGES ON ca2.* TO 'TheMaster'@'localhost';
 
+--HAHAHA! THIS IS THE POWER OF THE UNIVERSE SEED! NOW WITNESS THE BEGINNING OF A NEW UNIVERSE!
+
+REVOKE ALL PRIVILEGES ON ca2.* TO 'TheMaster'@'localhost';
+
+--he is no longer almighty, admin gone
+
 -- Sauce https://www.strongdm.com/blog/mysql-create-user-manage-access-privileges-how-to#:~:text=mysql%3E%20CREATE%20USER%20'local_user',directly%20from%20any%20other%20machine.
 
 --Users
@@ -269,6 +275,12 @@ GRANT SELECT ON ca2.Products TO 'ArtyMarty'@'localhost';
 GRANT SELECT ON ca2.ArtistAlley TO 'ArtyMarty'@'localhost';
 
 -- artyMarty can only view these 3 tables, they are not allowed to Edit anything
+
+REVOKE SELECT ON ca2.Vendors TO 'ArtyMarty'@'localhost';
+REVOKE SELECT ON ca2.Products TO 'ArtyMarty'@'localhost';
+REVOKE SELECT ON ca2.ArtistAlley TO 'ArtyMarty'@'localhost';
+
+-- artyMarty can't only view these 3 tables, they can't do anything fullstop
 
 CREATE USER 'MaintenanceMick'@'localhost' IDENTIFIED BY '123';
 
@@ -281,3 +293,5 @@ GRANT INSERT, UPDATE, DELETE, SELECT ON ca2.Products TO 'MaintenanceMick'@'local
 REVOKE INSERT, UPDATE, DELETE, SELECT ON ca2.Vendors FROM 'MaintenanceMick'@'localhost';
 REVOKE INSERT, UPDATE, DELETE, SELECT ON ca2.ArtistAlley FROM 'MaintenanceMick'@'localhost';
 REVOKE INSERT, UPDATE, DELETE, SELECT ON ca2.Products FROM 'MaintenanceMick'@'localhost';
+
+--Mick here can't edit OR view these tables
