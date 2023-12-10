@@ -187,6 +187,7 @@ INSERT INTO VendorInventory (VendorInventoryID, VendorID, ProductID) VALUES
 (23, 3, 23),
 (24, 4, 24),
 (25, 5, 25);
+(25, 5, 25);
 
 -- Sample data for Event table
 INSERT INTO Event (VenueID, VendorID, EventID, Date) VALUES
@@ -281,3 +282,13 @@ GRANT INSERT, UPDATE, DELETE, SELECT ON ca2.Products TO 'MaintenanceMick'@'local
 REVOKE INSERT, UPDATE, DELETE, SELECT ON ca2.Vendors FROM 'MaintenanceMick'@'localhost';
 REVOKE INSERT, UPDATE, DELETE, SELECT ON ca2.ArtistAlley FROM 'MaintenanceMick'@'localhost';
 REVOKE INSERT, UPDATE, DELETE, SELECT ON ca2.Products FROM 'MaintenanceMick'@'localhost';
+
+
+
+
+
+-- queries
+-- selects the info of vendors which have a products which has a sword in the name or has scifi in the name
+SELECT * from Vendors JOIN VendorInventory USING(VendorID) JOIN Products USING(ProductID) WHERE Products.name like "%Sword%" OR products.name like "%Sci-Fi%";
+-- selects the name of vendors and their product if the price is bigger than 30
+SELECT vendors.name, products.name, products.Price from Vendors JOIN VendorInventory USING(VendorID) JOIN Products USING(ProductID) WHERE products.Price > 30;
