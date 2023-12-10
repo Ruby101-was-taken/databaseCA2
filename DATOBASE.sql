@@ -330,3 +330,8 @@ call InsertProduct('Realistic Life Sized Buffaloo', 2500.87, "It is expensive, p
 SELECT * from Vendors JOIN VendorInventory USING(VendorID) JOIN Products USING(ProductID) WHERE Products.name like "%Sword%" OR products.name like "%Sci-Fi%";
 -- selects the name of vendors and their product if the price is bigger than 30
 SELECT vendors.name, products.name, products.Price from Vendors JOIN VendorInventory USING(VendorID) JOIN Products USING(ProductID) WHERE products.Price > 30;
+
+--index
+CREATE INDEX ind_v_name ON Vendors (Name);
+CREATE INDEX ind_p_name_desc ON Products (Price, Description);
+CREATE INDEX ind_aa_name_capacity ON ArtistAlley (Name, Capacity);
