@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS ca2;
+create database ca2;
+use ca2;
+
 -- tables
 -- Table: ArtistAlley
 CREATE TABLE ArtistAlley (
@@ -35,9 +39,10 @@ CREATE TABLE VendorArtistAlleys (
 
 -- Table: VendorInventory
 CREATE TABLE VendorInventory (
+    VendorInventoryID int NOT NULL,
     VendorID int  NOT NULL,
     ProductID int  NOT NULL,
-    CONSTRAINT VendorInventory_pk PRIMARY KEY (VendorID)
+    CONSTRAINT VendorInventory_pk PRIMARY KEY (VendorInventoryID)
 );
 
 -- Table: Vendors
@@ -94,11 +99,11 @@ INSERT INTO Venue (VenueID, Name, Address) VALUES
 
 -- Sample data for ArtistAlley table
 INSERT INTO ArtistAlley (ArtistAlleyID, VenueID, Name, Capacity) VALUES
-VALUES (1, 1, 'Adam West Hall', 150),
-VALUES (2, 1, 'Clint East Hall', 120),
-VALUES (3, 1, 'Nolan North Hall', 190),
-VALUES (4, 1, 'James South Hall', 55),
-VALUES (5, 1, 'Centre Hall', 100);
+(1, 1, 'Adam West Hall', 150),
+(2, 1, 'Clint East Hall', 120),
+(3, 1, 'Nolan North Hall', 190),
+(4, 1, 'James South Hall', 55),
+(5, 1, 'Centre Hall', 100);
 
 -- Sample data for Vendors table
 INSERT INTO Vendors (VendorID, Name, Email) VALUES
@@ -115,7 +120,7 @@ INSERT INTO Vendors (VendorID, Name, Email) VALUES
 
 
 -- Sample data for Products table
-INSERT INTO Products (ProductID, Name, Price, Description)
+INSERT INTO Products (ProductID, Name, Price, Description) VALUES
   (1, 'Hand-Drawn Art', 10.00, 'Hand drawn pictures by me in an art studio of anime characters'),
   (2, 'Digital Art Drawings', 25.00, 'Digital designed art of various genres and shows'),
   (3, 'Wooden Prop Swords', 50.00, 'Handmade and painted wooden swords based on swords from various TV shows'),
@@ -156,78 +161,81 @@ INSERT INTO VendorArtistAlleys (VendorID, ArtistAlleyID) VALUES
 (10, 5);
 
 -- Sample data for VendorInventory table
-INSERT INTO VendorInventory (VendorID, ProductID) VALUES
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 7),
-(8, 8),
-(9, 9),
-(10, 10),
-(1, 11),
-(2, 12),
-(3, 13),
-(4, 14),
-(5, 15),
-(6, 16),
-(7, 17),
-(8, 18),
-(9, 19),
-(10, 20),
-(1, 21),
-(2, 22),
-(3, 23),
-(4, 24),
-(5, 25);
+INSERT INTO VendorInventory (VendorInventoryID, VendorID, ProductID) VALUES
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 3),
+(4, 4, 4),
+(5, 5, 5),
+(6, 6, 6),
+(7, 7, 7),
+(8, 8, 8),
+(9, 9, 9),
+(10, 10, 10),
+(11, 1, 11),
+(12, 2, 12),
+(13, 3, 13),
+(14, 4, 14),
+(15, 5, 15),
+(16, 6, 16),
+(17, 7, 17),
+(18, 8, 18),
+(19, 9, 19),
+(20, 10, 20),
+(21, 1, 21),
+(22, 2, 22),
+(23, 3, 23),
+(24, 4, 24),
+(25, 5, 25);
 
 -- Sample data for Event table
 INSERT INTO Event (VenueID, VendorID, EventID, Date) VALUES
 (1, 1, 101, '2023-05-15'),
 (2, 2, 102, '2023-06-20');
 
-CREATE TABLE DeletedProductsLog(
+-- Table: DeletedProductsLog
+CREATE TABLE DeletedProductsLog (
     ProductID int  NOT NULL,
-    CONSTRAINT Venue_pk PRIMARY KEY (ProductID)
+    DeletedDate datetime NOT NULL,
+    CONSTRAINT DeletedProductsLog_pk PRIMARY KEY (ProductID)
 );
 
+
 DELIMITER //
-;
+
 CREATE TRIGGER after_delete_product
 AFTER DELETE ON Products
 FOR EACH ROW
 BEGIN
-    -- Your trigger logic goes here
-    -- For example, you can log the deletion into a separate table
     INSERT INTO DeletedProductsLog (ProductID, DeletedDate)
     VALUES (OLD.ProductID, NOW());
 END;
-DELIMITER ;
+
 //
 
+DELIMITER ;
+
 DELIMITER //
-;
 CREATE TRIGGER room_limit_highestlimit
 BEFORE UPDATE ON ArtistAlley
 FOR EACH ROW
 BEGIN
- DECLARE checkNewCapacity;
-SET checkNewCapacity = NEW.Capacity;
-IF checkNewCapacity > 200 THEN
-  SIGNAL SQLSTATE '45000'
-  SET MESSAGE_TEXT = 'Room cannot have more than 200 at a time'
-  END IF;
-  END;
-  DELIMITER :
-  //
+    DECLARE checkNewCapacity INT;
+    SET checkNewCapacity = NEW.Capacity;
+    IF checkNewCapacity > 200 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Room cannot have more than 200 at a time';
+    END IF;
+END;
+//
+DELIMITER ;
+
   --INSPIRED BY https://stackoverflow.com/questions/59739854/signal-sqlstate-45000-doesnt-stop-insert, USED AS WARNING MESSAGE IF ROOM LIMIT OVER TWO HUNDED
 
 -- Update Statement Example
-UPDATE Vendors
+UPDATE products
 SET Name = 'Cute Hand-Drawn Art', Description = 'CUTE Hand drawn pictures by me in an art studio of CUTE anime characters'
-WHERE VendorID = 1;
+WHERE ProductID = 1;
 --This here where basically specifies that only the vendor with VendorID 1 will have that there new name and description
 
 --Delete Statement Example
@@ -236,7 +244,7 @@ WHERE Name LIKE '*Sci-Fi*';
 --This one here is mighty simple, deletes all products with "Sci-Fi" in them's names, this convention don't need em War Stars
 
 --View Example #1
-CREATE VIEW [Premium Products Above Average Price ]
+CREATE VIEW Premium_Products_Above_Average_Price AS
 SELECT Name, Price
 FROM Products
 WHERE Price > (SELECT AVG(Price) FROM Products);
