@@ -322,6 +322,21 @@ DELIMITER ;
 
 call InsertProduct('Realistic Life Sized Buffaloo', 2500.87, "It is expensive, please don't buy");
 
+BEGIN;
+call InsertProduct('Realistic Life Sized Buffaloo 2', 2500.88, "It is still expensive, please don't buy");
+
+select * from products;
+rollback;
+select * from products;
+
+
+BEGIN;
+Delete from vendors where VendorID > 2;
+
+select * from vendors;
+rollback;
+select * from vendors;
+
 
 
 
