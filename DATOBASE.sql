@@ -23,7 +23,7 @@ CREATE TABLE Event (
 
 -- Table: Products
 CREATE TABLE Products (
-    ProductID int  NOT NULL,
+    ProductID int  NOT NULL AUTO_INCREMENT,
     Name varchar(255)  NOT NULL,
     Price decimal(8,2)  NOT NULL,
     Description varchar(255)  NOT NULL,
@@ -303,7 +303,7 @@ CREATE PROCEDURE UpdateProductPrice(
    IN newPrice DECIMAL(8,2)
 )
 BEGIN
-   UPDATE Products SET Price = newPrice WHERE ProductID = productId;
+   UPDATE Products SET Price = newPrice WHERE products.ProductID = productId;
 END //
 DELIMITER ;
 
@@ -320,7 +320,7 @@ BEGIN
 END //
 DELIMITER ;
 
-InsertProduct('Realistic Life Sized Buffaloo', 2500,87, 'It is expensive, please don''t buy');
+call InsertProduct('Realistic Life Sized Buffaloo', 2500.87, "It is expensive, please don't buy");
 
 
 
