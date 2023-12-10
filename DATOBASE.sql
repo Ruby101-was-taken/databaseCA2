@@ -254,3 +254,30 @@ WHERE Price > (SELECT AVG(Price) FROM Products);
 
 --End desc
 
+
+--Admin 
+CREATE USER 'TheMaster'@'localhost' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON ca2.* TO 'TheMaster'@'localhost';
+
+-- Sauce https://www.strongdm.com/blog/mysql-create-user-manage-access-privileges-how-to#:~:text=mysql%3E%20CREATE%20USER%20'local_user',directly%20from%20any%20other%20machine.
+
+--Users
+CREATE USER 'ArtyMarty'@'localhost' IDENTIFIED BY 'abc';
+
+GRANT SELECT ON ca2.Vendors TO 'ArtyMarty'@'localhost';
+GRANT SELECT ON ca2.Products TO 'ArtyMarty'@'localhost';
+GRANT SELECT ON ca2.ArtistAlley TO 'ArtyMarty'@'localhost';
+
+-- artyMarty can only view these 3 tables, they are not allowed to Edit anything
+
+CREATE USER 'MaintenanceMick'@'localhost' IDENTIFIED BY '123';
+
+GRANT INSERT, UPDATE, DELETE, SELECT ON ca2.Vendors TO 'MaintenanceMick'@'localhost';
+GRANT INSERT, UPDATE, DELETE, SELECT ON ca2.ArtistAlley TO 'MaintenanceMick'@'localhost';
+GRANT INSERT, UPDATE, DELETE, SELECT ON ca2.Products TO 'MaintenanceMick'@'localhost';
+
+--Mick here can edit AND view these tables
+
+REVOKE INSERT, UPDATE, DELETE, SELECT ON ca2.Vendors FROM 'MaintenanceMick'@'localhost';
+REVOKE INSERT, UPDATE, DELETE, SELECT ON ca2.ArtistAlley FROM 'MaintenanceMick'@'localhost';
+REVOKE INSERT, UPDATE, DELETE, SELECT ON ca2.Products FROM 'MaintenanceMick'@'localhost';
