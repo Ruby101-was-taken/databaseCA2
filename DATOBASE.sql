@@ -296,6 +296,32 @@ REVOKE INSERT, UPDATE, DELETE, SELECT ON ca2.ArtistAlley FROM 'MaintenanceMick'@
 REVOKE INSERT, UPDATE, DELETE, SELECT ON ca2.Products FROM 'MaintenanceMick'@'localhost';
 
 
+--Procedure
+DELIMITER //
+CREATE PROCEDURE UpdateProductPrice(
+   IN productId INT,
+   IN newPrice DECIMAL(8,2)
+)
+BEGIN
+   UPDATE Products SET Price = newPrice WHERE ProductID = productId;
+END //
+DELIMITER ;
+
+CALL UpdateProductPrice(1, 50.00);
+
+DELIMITER //
+CREATE PROCEDURE InsertProduct(
+   IN productName VARCHAR(255),
+   IN productPrice DECIMAL(8,2),
+   IN productDescription VARCHAR(255)
+)
+BEGIN
+   INSERT INTO Products (Name, Price, Description) VALUES (productName, productPrice, productDescription);
+END //
+DELIMITER ;
+
+InsertProduct('Realistic Life Sized Buffaloo', 2500,87, 'It is expensive, please don''t buy');
+
 
 
 
