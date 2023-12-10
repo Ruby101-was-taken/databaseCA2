@@ -241,7 +241,7 @@ WHERE ProductID = 1;
 
 --Delete Statement Example
 DELETE FROM Products
-WHERE Name LIKE '*Sci-Fi*';
+WHERE Name LIKE '%Sci-Fi%';
 --This one here is mighty simple, deletes all products with "Sci-Fi" in them's names, this convention don't need em War Stars
 
 --View Example #1
