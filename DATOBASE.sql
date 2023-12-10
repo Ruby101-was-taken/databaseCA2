@@ -252,7 +252,16 @@ WHERE Price > (SELECT AVG(Price) FROM Products);
 --THIS USES 1 TABLE, AND SHOWS ALL PRODUCTS THAT ARE ABOVE AVERAGE PRICE, THESE ARE PREMIUM PRODUCTS
 
 --View Example the second
-
+CREATE VIEW VendorInventoryView AS
+SELECT
+    v.VendorID,
+    v.Name AS VendorName,
+    v.Email AS VendorEmail,
+    vi.ProductID
+FROM
+    Vendors v
+JOIN
+    VendorInventory vi ON v.VendorID = vi.VendorID;
 --End desc
 
 
